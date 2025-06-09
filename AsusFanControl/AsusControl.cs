@@ -1,9 +1,5 @@
 ﻿using AsusSystemAnalysis;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AsusFanControl
 {
@@ -22,8 +18,8 @@ namespace AsusFanControl
         public void SetFanSpeed(byte value, byte fanIndex = 0)
         {
             AsusWinIO64.HealthyTable_SetFanIndex(fanIndex);
-            AsusWinIO64.HealthyTable_SetFanTestMode((char)(value > 0 ? 0x01 : 0x00));
             AsusWinIO64.HealthyTable_SetFanPwmDuty(value);
+            AsusWinIO64.HealthyTable_SetFanTestMode((char)(value > 0 ? 0x01 : 0x00));
         }
 
         public void SetFanSpeed(int percent, byte fanIndex = 0)
@@ -32,13 +28,12 @@ namespace AsusFanControl
             SetFanSpeed(value, fanIndex);
         }
 
-        public async void SetFanSpeeds(byte value)
+        public void SetFanSpeeds(byte value)
         {
             var fanCount = AsusWinIO64.HealthyTable_FanCounts();
-            for(byte fanIndex = 0; fanIndex < fanCount; fanIndex++)
+            for (byte fanIndex = 0; fanIndex < fanCount; fanIndex++)
             {
                 SetFanSpeed(value, fanIndex);
-                await Task.Delay(20);
             }
         }
 
